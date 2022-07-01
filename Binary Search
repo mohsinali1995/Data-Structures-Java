@@ -1,0 +1,36 @@
+//two implementations of the binary search, first iterative, then recursive.
+
+//Iterative method
+public static int BinarySearch(int[] nums, int a){
+
+        int p = 0;
+        int r = nums.length-1;
+
+        while(p <= r){
+            int q = (p+r)/2;
+            if(a < nums[q]) r = q-1;
+            else if(a > nums[q]) p = q+1;
+            else return q;
+        }
+        return -1;
+    }
+    
+    
+//Recursive method
+public static int BinaryRecursive(int[] nums, int first, int last, int a) {
+        if (first > last) {
+            return -1;
+        } else {
+            int mid = (first + last) / 2;
+
+
+            if(a == nums[mid]) {
+                return mid;
+            }
+             else if (a < nums[mid]) {
+                return BinaryRecursive(nums, first, mid - 1, a);
+            } else {
+                return BinaryRecursive(nums, mid + 1, last, a);
+            }
+        }
+    }
