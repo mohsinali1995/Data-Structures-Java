@@ -1,5 +1,6 @@
 //my implementation of stack data structure
 
+//using integer array
 class Stack {
     private int[] nums;
     private int size;
@@ -33,6 +34,54 @@ class Stack {
 
     public int peek(){
         return nums[top];
+    }
+
+    public boolean isEmpty(){
+        return (top == -1);
+    }
+
+    public boolean isFull(){
+        return (size-1 == top);
+    }
+
+}
+
+
+
+//using char array (this implementation can be used to reverse a string)
+class ReverseString{
+    private char[] chars;
+    private int size;
+    private int top;
+
+    public ReverseString(int size) {
+        this.size = size;
+        this.chars = new char[size];
+        this.top = -1;
+    }
+
+    public void push(char x){
+        if(isFull()){
+            System.out.println("Stack is already full");
+        }else {
+            top++;
+            chars[top] = x;
+        }
+    }
+
+    public char pop() {
+        if (isEmpty()) {
+            System.out.println("Stack is empty");
+            return '0';
+        } else {
+            int popped = top;
+            top--;
+            return chars[popped];
+        }
+    }
+
+    public char peek(){
+        return chars[top];
     }
 
     public boolean isEmpty(){
