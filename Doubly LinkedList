@@ -1,0 +1,161 @@
+//my implementation of a doubly linked list
+
+//Node Class
+public class Node {
+    int data;
+    Node next;
+    Node previous;
+}
+
+public class doublylinklist {
+    private Node first;
+    private Node last;
+
+    public doublylinklist() {
+        this.first = null;
+        this.last = null;
+    }
+
+    public boolean isEmpty(){
+        return first == null;
+    }
+
+    public void insertFirst(int data){
+        Node node = new Node();
+        node.data = data;
+
+        if(isEmpty()){
+            last = node;
+        } else{
+            first.previous = node;
+        }
+
+        node.next = first;
+        this.first = node;
+    }
+
+    public void insertLast(int data){
+        Node node = new Node();
+        node.data = data;
+
+        if(isEmpty()){
+            first = node;
+        } else{
+            last.next = node;
+            node.previous = last;
+        }
+
+        this.last = node;
+
+    }
+
+
+    public int deleteFirst(){
+        if(isEmpty()){
+            System.out.println("list is already empty");
+            return 0;
+        }
+
+        int deleted = first.data;
+
+        if(first.next == null){
+            last = null;
+        }else {
+            first.next.previous = null;
+        }
+
+        first = first.next;
+
+        return deleted;
+
+    }
+
+
+    public int deleteLast(){
+        if(isEmpty()){
+            System.out.println("list is already empty");
+            return 0;
+        }
+
+        int deleted = last.data;
+
+        if(first.next == null){
+            first = null;
+        }else{
+             last.previous.next = null;
+        }
+        last = last.previous;
+
+        return deleted;
+
+    }
+
+
+    public boolean insertAfter(int key, int data) {
+        Node node = new Node();
+        node.data = data;
+
+        Node current = first;
+
+        while (current.data != key) {
+            current = current.next;
+            if (current == null) {
+                return false;
+            }
+        }
+
+        if (current == last) {
+            last.next = node;
+            node.previous = last;
+            last = node;
+        } else {
+            node.next = current.next;
+            current.next.previous = node;
+        }
+
+        node.previous = current;
+        current.next = node;
+
+        return true;
+    }
+
+    public int deleteKey(int key){
+
+        Node current = first;
+        int result;
+
+        while(current.data != key) {
+            current = current.next;
+            if(current == null){
+                return 0;
+            }
+        }
+
+        if(current == first){
+            first = current.next;
+        } else{
+            current.previous.next = current.next;
+        }
+
+
+
+        if (current == last) {
+            last = current.previous;
+        } else {
+            current.next.previous = current.previous;
+
+        }
+
+        result = current.data;
+        return result;
+
+    }
+
+    public void view(){
+        Node current = first;
+        while(current != null){
+            System.out.println("["+current.data+"] ");
+            current = current.next;
+        }
+    }
+}
