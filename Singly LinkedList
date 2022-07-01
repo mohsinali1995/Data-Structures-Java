@@ -1,0 +1,91 @@
+public class SingleLinkList {
+
+    private node first;
+
+    public SingleLinkList() {
+    }
+
+    public boolean isEmpty(){
+        return first == null;
+    }
+
+    public void insertFirst(int num){
+        node node = new node();
+        node.data = num;
+        node.next = first;
+        first = node;
+    }
+
+    public void insertLast(int num){
+
+        node node = new node();
+        node.data = num;
+
+        if (isEmpty()){
+            this.first = node;
+        } else{
+
+            node current = first;
+
+            while(current.next != null){
+                current = current.next;
+            }
+
+            current.next = node;
+        }
+    }
+
+    public int removeFirst(){
+        if(isEmpty()){
+            System.out.println("nothing there to remove");
+            return 0;
+        }
+
+        int result;
+
+        if(first.next == null){
+            result = first.data;
+            first = null;
+            return result;
+        }
+            node current = first;
+            first = first.next;
+
+            result = current.data;
+            current = null;
+
+            return result;
+
+
+    }
+
+    public int removeLast(){
+        if(isEmpty()){
+            System.out.println("nothing there to remove");
+            return 0;
+        }
+        node current = first;
+        node runner = current;
+
+        while(current.next != null){
+            runner = current;
+            current = current.next;
+        }
+
+        int removedNode = current.data;
+
+        runner.next = null;
+
+        return removedNode;
+    }
+
+    public void viewList(){
+        node current = first;
+
+        while(current != null){
+            System.out.println("["+current.data+"]");
+            current = current.next;
+        }
+    }
+
+}
