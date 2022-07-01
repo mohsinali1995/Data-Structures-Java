@@ -1,0 +1,73 @@
+//Similar to the singular linkedlist, but with the addition of the "Last" node.
+
+//Node class
+public class node {
+    int data;
+    node next = null;
+}
+
+
+public class CircularLinkList {
+    private node first;
+    private node last;
+
+    public CircularLinkList() {
+        this.first = null;
+        this.last = null;
+    }
+
+    public boolean isEmpty() {
+        return first == null;
+    }
+
+    public void insertFirst(int data){
+        node node = new node();
+        node.data = data;
+
+        if(isEmpty()){
+            last = node;
+        }
+
+        node.next = first;
+        first = node;
+    }
+
+
+    public void insertLast(int data) {
+        node node = new node();
+        node.data = data;
+
+        if (isEmpty()) {
+            first = node;
+        } else{
+            last.next = node;
+            last = node;
+        }
+    }
+
+    public int deleteFirst(){
+        if(isEmpty()){
+            System.out.println("nothing there to delete");
+            return 0;
+        }
+
+        if(first.next == null){
+            last = null;
+        }
+
+        int result = first.data;
+        first = first.next;
+        return result;
+
+    }
+
+
+    public void viewList(){
+        node current = first;
+
+        while(current != null){
+            System.out.println("["+current.data+"]");
+            current = current.next;
+        }
+    }
+}
