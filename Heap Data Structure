@@ -1,0 +1,121 @@
+//my implementation of a Heap data structure
+
+//Node class
+public class Node {
+    private int data;
+
+    public Node(int data) {
+        this.data = data;
+    }
+
+    public int getData() {
+        return data;
+    }
+
+    public void setData(int data) {
+        this.data = data;
+    }
+}
+
+//Heap Class
+public class Heap {
+
+    private Node[] heapArray;
+    private int maxSize;
+    private int currentSize;
+
+    public Heap(int size) {
+        this.maxSize = size;
+        this.heapArray = new Node[size];
+        this.currentSize = 0;
+    }
+
+
+    public int getSize(){
+        return currentSize;
+    }
+
+    public boolean isEmpty(){
+        return (currentSize == 0);
+    }
+
+    public boolean insert(int key){
+        if(currentSize == maxSize){
+            return false;
+        }
+
+        Node node = new Node(key);
+
+        heapArray[currentSize] = node;
+
+        trickleUp(currentSize);
+
+        currentSize++;
+
+        return true;
+
+    }
+
+    private void trickleUp(int index){
+
+        //find out the index of the parent in the heap array
+
+        int parentIdx = (index-1)/2;
+
+        Node node = heapArray[index];
+
+
+        while(index > 0 && heapArray[parentIdx].getData() < node.getData()){
+
+            heapArray[index] = heapArray[parentIdx]; //move parent down
+            index = parentIdx; //move the index up in the heap to the parents index
+            parentIdx = (parentIdx-1)/2; //parent index updated to new parent index
+
+        }
+
+        //once the correct index for insertion is found, the loop will exit.
+        //now the index variable is updated and ready for insertion of the new Node.
+        heapArray[index] = node;
+    }
+
+    public Node remove(){
+        Node root = heapArray[0];
+
+        heapArray[0] = heapArray[--currentSize];
+
+        trickleDown(0);
+
+        return root;
+    }
+
+    private void trickleDown(int index){
+
+        int largerChildIdx;
+
+        Node nodeToTrickle = heapArray[index];
+
+
+        while(index < currentSize/2){
+
+
+                int leftChildIdx = (2 * index) + 1;
+                int righChildIdx = leftChildIdx + 1;
+
+                if (heapArray[leftChildIdx].getData() > heapArray[righChildIdx].getData()) {
+                    largerChildIdx = leftChildIdx;
+                } else {
+                    largerChildIdx = righChildIdx;
+                }
+
+                Node temp = heapArray[largerChildIdx];
+
+                heapArray[largerChildIdx] = nodeToTrickle;
+                heapArray[index] = temp;
+
+                index = largerChildIdx;
+
+        }
+
+    }
+
+}
