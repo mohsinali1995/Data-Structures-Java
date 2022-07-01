@@ -1,0 +1,99 @@
+//hash table with a simple hashing function that avoids collisions.
+
+public class hashtable {
+
+    String[] hashArr;
+    int arrSize;
+    int CurrentSize;
+
+    public hashtable(int numOfSlots) {
+
+        if(isPrime(numOfSlots)) {
+            this.arrSize = numOfSlots;
+            this.hashArr = new String[numOfSlots];
+        } else{
+            int prime = getNxtPrime(numOfSlots);
+            this.arrSize = prime;
+            this.hashArr = new String[prime];
+
+            System.out.println("given table size was not prime. table size changed to "+prime+".");
+        }
+        this.CurrentSize = 0;
+    }
+
+    private boolean isPrime(int num){
+        for(int i = 2; i <= num/2; i++){
+            if(num % i == 0) {
+                return false;
+            }
+        }
+            return true;
+    }
+
+
+    private int getNxtPrime(int num){
+        int result = num;
+
+        while(!isPrime(result)){
+            result++;
+        }
+
+        return result;
+    }
+
+    //hashfunc1 - return index
+    //hashfunc2 - return stepsize
+    //insert - while loop {index + stepsize % arraysize
+
+    private int hashfunc1(String word){
+        int hashVal = word.hashCode(); //get unique generated hash code for string
+        hashVal = hashVal % arrSize; //make it fit inside the array by using remainder operator
+
+        if(hashVal < 0){ //if the value returned is negative, this statement will make it positive
+            hashVal = hashVal + arrSize;
+        }
+
+        return hashVal; //ideal index for insertion
+    }
+
+    private int hashfunc2(String word){
+        int hashVal = word.hashCode();
+        hashVal = hashVal % arrSize;
+
+        if(hashVal < 0){
+            hashVal = hashVal + arrSize;
+        }
+
+        return 3 + hashVal % 3;
+    }
+
+    public void insert(String word){
+       int hashVal = hashfunc1(word);
+       int stepSize =hashfunc2(word);
+
+       while(hashArr[hashVal] != null){ //while the slot @ hashVal in the array is taken, do...
+           hashVal = hashVal + stepSize;
+           hashVal %= arrSize;
+       }
+
+       hashArr[hashVal] = word;
+       CurrentSize++;
+        System.out.println("inserted "+word+ " at "+hashVal);
+
+    }
+
+    public String find(String word){
+        int hashVal = hashfunc1(word);
+        int stepSize =hashfunc2(word);
+
+        while(hashArr[hashVal] != null){
+            if(hashArr[hashVal].equals(word)){
+                return hashArr[hashVal];
+            }
+            hashVal = hashVal + stepSize;
+            hashVal %= arrSize;
+        }
+
+        return hashArr[hashVal];
+    }
+}
