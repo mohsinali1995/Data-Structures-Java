@@ -1,0 +1,234 @@
+//Binary Search Tree implementation with additional methods
+//GetMax, GetMin, TreeTraversal, GetDepth and GetRoot methods added.
+
+//Node Class
+public class Node {
+    int key;
+    String value;
+    Node left, right;
+
+    public Node(int key, String value) {
+        super();
+        this.key = key;
+        this.value = value;
+    }
+}
+
+
+//BST
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+
+public class BST {
+    private Node root;
+
+
+    public Node getRoot(){
+        return root;
+    }
+
+    public void insert(int key, String value){
+
+        Node node = new Node(key, value);
+
+        if(root == null){
+            root = node;
+        }
+
+        else {
+            Node current = root;
+            Node parent;
+
+            while (true) {
+                parent = current;
+
+                if (key < current.key) {
+                    current = current.left;
+                    if (current == null) {
+                        parent.left = node;
+                        return;
+                    }
+                } else {
+                    current = current.right;
+                    if (current == null) {
+                        parent.right = node;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    public Node findmin(){
+        Node current = root;
+        Node lastNode = null;
+
+        while(current != null){
+            lastNode = current;
+            current = current.left;
+        }
+
+        return lastNode;
+    }
+
+
+    public Node findmax(){
+        Node current = root;
+        Node lastNode = null;
+
+        while(current != null){
+            lastNode = current;
+            current = current.right;
+        }
+
+        return lastNode;
+    }
+
+    public boolean remove(int key){
+        Node current = root;
+        Node parent =root;
+
+        boolean isleftChild = false;
+
+        while(current.key != key){
+            parent = current;
+
+            if(key > current.key){
+                current = current.right;
+                isleftChild = false;
+            } else{
+                current = current.left;
+                isleftChild = true;
+            }
+
+            if(current == null){
+                return false;
+            }
+        }
+
+
+        Node deletionNode = current;
+
+        if(deletionNode.left == null && deletionNode.right == null){
+
+            if(deletionNode == root){
+                root = null;
+            }
+            else if(isleftChild){
+                parent.left = null;
+            }
+            else{
+                parent.right = null;
+            }
+        }
+
+        else if(deletionNode.right == null){
+            if(deletionNode == root){
+                root = deletionNode.left;
+            }
+            else if(isleftChild){
+                parent.left = deletionNode.left;
+            } else{
+                parent.right = deletionNode.left;
+            }
+        }
+
+        else if(deletionNode.left == null){
+            if(deletionNode == root){
+                root = deletionNode.right;
+            }
+            else if(isleftChild){
+                parent.left = deletionNode.right;
+            } else{
+                parent.right = deletionNode.right;
+            }
+        }
+
+        else{
+
+            Node successorNode = getSuccessor(deletionNode);
+
+            if(deletionNode == root){
+                root = successorNode;
+            } else if(isleftChild){
+                parent.left = successorNode;
+            } else{
+                parent.right = successorNode;
+            }
+
+            successorNode.left = deletionNode.left;
+
+        }
+
+
+        return true;
+    }
+
+
+    public Node getSuccessor(Node deletionNode){
+        Node successorParent = deletionNode;
+        Node successor = deletionNode;
+
+        Node current = deletionNode.right;
+
+        while(current != null){
+            successorParent = current;
+            successor = current;
+
+            current = current.left;
+        }
+
+        if(successor != deletionNode.right){
+            successorParent.left = successor.right;
+            successor.right = deletionNode.right;
+        }
+
+        return successor;
+
+    }
+
+    public void treeTraversal(Node node){
+
+        if(node == null){
+            return;
+        }
+
+        System.out.println(node.key);
+        treeTraversal(node.left);
+        treeTraversal(node.right);
+
+    }
+
+    public int getDepth(){
+
+        int depth = 0;
+
+        Node node = root;
+
+        if(node == null){
+            return 0;
+        }
+
+        if(node.left == null && node.right == null){
+            return 1;
+        }
+
+        while(node != null){
+            if(node.left == null){
+                node = node.right;
+            } else{
+                node = node.left;
+            }
+            depth++;
+        }
+
+        return depth-1;
+    }
+
+
+}
+
+
